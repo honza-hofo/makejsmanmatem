@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kalendář akcí 2026 | Makej s ManMatem</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;900&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Poppins', sans-serif; background-color: #f4f5f7; color: #333; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+        .site-header { background: #fff; position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.06); }
+        .header-inner { max-width: 1200px; margin: 0 auto; padding: 0 30px; display: flex; align-items: center; justify-content: space-between; height: 80px; position: relative; }
+        .logo-link { display: flex; align-items: center; text-decoration: none; flex-shrink: 0; }
+        .logo-link img { height: 50px; width: auto; }
+        .nav-center { display: flex; align-items: center; gap: 36px; list-style: none; position: absolute; left: 50%; transform: translateX(-50%); }
+        .nav-center a { text-decoration: none; color: #333; font-family: 'Montserrat', sans-serif; font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; position: relative; padding: 4px 0; transition: color 0.3s ease; }
+        .nav-center a::after { content: ''; position: absolute; bottom: -2px; left: 0; width: 0; height: 2px; background: #E30A14; transition: width 0.3s ease; }
+        .nav-center a:hover::after, .nav-center a.active::after { width: 100%; }
+        .nav-center a:hover, .nav-center a.active { color: #E30A14; }
+        .header-right { display: flex; align-items: center; flex-shrink: 0; }
+        .btn-club { display: inline-flex; align-items: center; gap: 8px; background: #E30A14; color: #fff; text-decoration: none; font-family: 'Montserrat', sans-serif; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; padding: 12px 24px; border-radius: 50px; transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease; }
+        .btn-club:hover { background: #c50812; transform: translateY(-1px); box-shadow: 0 4px 15px rgba(227,10,20,0.35); }
+        .burger-menu { display: none; background: none; border: none; cursor: pointer; padding: 8px; flex-direction: column; gap: 5px; z-index: 1010; }
+        .burger-menu span { display: block; width: 24px; height: 2px; background: #333; border-radius: 2px; transition: all 0.3s ease; }
+        .burger-menu.open span:nth-child(1) { transform: rotate(45deg) translate(5px,5px); }
+        .burger-menu.open span:nth-child(2) { opacity: 0; }
+        .burger-menu.open span:nth-child(3) { transform: rotate(-45deg) translate(5px,-5px); }
+        .mobile-nav-overlay { display: none; position: fixed; top:0;left:0;right:0;bottom:0; background: rgba(0,0,0,0.5); z-index: 999; opacity: 0; transition: opacity 0.3s ease; }
+        .mobile-nav-overlay.visible { opacity: 1; }
+        .mobile-nav { display: none; position: fixed; top:0; right:-300px; width:300px; height:100%; background:#fff; z-index:1005; padding:100px 30px 30px; transition: right 0.3s ease; box-shadow: -5px 0 30px rgba(0,0,0,0.1); overflow-y: auto; }
+        .mobile-nav.open { right: 0; }
+        .mobile-nav a { display:block; text-decoration:none; color:#333; font-family:'Montserrat',sans-serif; font-size:15px; font-weight:600; text-transform:uppercase; letter-spacing:1px; padding:16px 0; border-bottom:1px solid #eee; }
+        .mobile-nav a:hover, .mobile-nav a.active { color: #E30A14; }
+        .mobile-nav .btn-club-mobile { display:inline-block; margin-top:24px; background:#E30A14; color:#fff; text-decoration:none; font-family:'Montserrat',sans-serif; font-size:13px; font-weight:700; text-transform:uppercase; letter-spacing:1px; padding:14px 28px; border-radius:50px; }
+
+        .hero { background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%); padding: 70px 30px 60px; text-align: center; color: #fff; }
+        .hero-inner { max-width: 700px; margin: 0 auto; }
+        .hero .year-big { font-family: 'Montserrat', sans-serif; font-size: 80px; font-weight: 900; color: #E30A14; line-height: 1; margin-bottom: 8px; }
+        .hero h1 { font-family: 'Montserrat', sans-serif; font-size: 36px; font-weight: 700; color: #fff; margin-bottom: 16px; }
+        .hero p { font-size: 18px; color: rgba(255,255,255,0.6); font-weight: 300; }
+        .hero-accent { width: 60px; height: 3px; background: #E30A14; margin: 24px auto 0; border-radius: 2px; }
+
+        .cal-section { max-width: 900px; margin: 0 auto; padding: 50px 30px 80px; }
+
+        .month-block { margin-bottom: 40px; }
+        .month-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+        .month-name {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 24px;
+            font-weight: 900;
+            color: #222;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        .month-line { flex-grow: 1; height: 2px; background: linear-gradient(to right, #E30A14, transparent); }
+        .month-count { font-size: 13px; color: #999; white-space: nowrap; }
+
+        .event-card {
+            display: flex;
+            align-items: center;
+            padding: 18px 20px;
+            background: #fff;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            cursor: default;
+        }
+        .event-card:hover {
+            transform: translateX(5px);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+        }
+        .event-card.highlight {
+            background: linear-gradient(135deg, #E30A14 0%, #ff3333 100%);
+            color: #fff;
+            border: none;
+        }
+        .event-card.highlight .event-date { color: #fff; border-right-color: rgba(255,255,255,0.3); }
+        .event-card.highlight .event-name { color: #fff; }
+        .event-card.highlight .event-location { color: rgba(255,255,255,0.8); }
+        .event-card.highlight:hover { transform: translateX(5px) scale(1.01); box-shadow: 0 8px 30px rgba(227,10,20,0.3); }
+
+        .event-date {
+            min-width: 100px;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 900;
+            font-size: 16px;
+            color: #E30A14;
+            border-right: 2px solid #f0f0f0;
+            margin-right: 20px;
+            padding-right: 20px;
+            line-height: 1.2;
+        }
+        .event-info { flex-grow: 1; }
+        .event-name {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 15px;
+            font-weight: 700;
+            color: #222;
+            margin-bottom: 2px;
+        }
+        .event-location { font-size: 13px; color: #888; }
+        .event-location svg { width: 14px; height: 14px; vertical-align: -2px; margin-right: 4px; }
+
+        .event-type { display: inline-block; font-family: 'Montserrat', sans-serif; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; padding: 3px 10px; border-radius: 50px; margin-left: auto; flex-shrink: 0; }
+        .type-zavod { background: rgba(227,10,20,0.1); color: #E30A14; }
+        .type-vystava { background: rgba(33,150,243,0.1); color: #2196F3; }
+        .type-akce { background: rgba(76,175,80,0.1); color: #4CAF50; }
+        .type-veletrh { background: rgba(255,152,0,0.1); color: #FF9800; }
+        .event-card.highlight .event-type { background: rgba(255,255,255,0.25); color: #fff; }
+
+        .filter-bar { max-width: 900px; margin: 0 auto; padding: 30px 30px 0; display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
+        .filter-btn { background: #fff; border: 2px solid #e0e0e0; border-radius: 50px; padding: 10px 22px; font-family: 'Montserrat', sans-serif; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; cursor: pointer; transition: all 0.3s ease; color: #666; }
+        .filter-btn:hover { border-color: #E30A14; color: #E30A14; }
+        .filter-btn.active { background: #E30A14; border-color: #E30A14; color: #fff; }
+
+        .past-event { opacity: 0.5; }
+
+        .site-footer { background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%); color: rgba(255,255,255,0.7); padding: 40px 30px 30px; }
+        .footer-bottom { max-width: 1200px; margin: 0 auto; text-align: center; font-size: 13px; color: rgba(255,255,255,0.35); }
+        .footer-bottom a { color: rgba(255,255,255,0.5); text-decoration: none; }
+
+        @media (max-width: 768px) {
+            .header-inner { height: 65px; padding: 0 20px; }
+            .logo-link img { height: 38px; }
+            .nav-center { display: none; }
+            .header-right .btn-club { display: none; }
+            .burger-menu { display: flex; }
+            .mobile-nav { display: block; }
+            .mobile-nav-overlay { display: block; }
+            .hero { padding: 50px 20px 40px; }
+            .hero .year-big { font-size: 56px; }
+            .hero h1 { font-size: 26px; }
+            .cal-section { padding: 30px 20px 60px; }
+            .event-date { min-width: 80px; font-size: 14px; margin-right: 14px; padding-right: 14px; }
+            .event-name { font-size: 14px; }
+            .month-name { font-size: 20px; }
+        }
+    </style>
+</head>
+<body>
+    <header class="site-header">
+        <div class="header-inner">
+            <a href="index.html" class="logo-link">
+                <img src="img/manmat-logo.png" alt="ManMat">
+            </a>
+            <ul class="nav-center">
+                <li><a href="kontakt.html">Kontakt</a></li>
+                <li><a href="ambasadori.html">Ambasadori</a></li>
+                <li><a href="clanky.html">Články</a></li>
+                <li><a href="kalendar.html" class="active">Kalendář</a></li>
+                <li><a href="mapa.html">Mapa</a></li>
+            </ul>
+            <div class="header-right">
+                <a href="#" class="btn-club">Manmat Club</a>
+                <button class="burger-menu" id="burgerMenu" aria-label="Menu"><span></span><span></span><span></span></button>
+            </div>
+        </div>
+    </header>
+    <div class="mobile-nav-overlay" id="mobileNavOverlay"></div>
+    <nav class="mobile-nav" id="mobileNav">
+        <a href="kontakt.html">Kontakt</a>
+        <a href="ambasadori.html">Ambasadori</a>
+        <a href="clanky.html">Články</a>
+        <a href="kalendar.html" class="active">Kalendář</a>
+        <a href="mapa.html">Mapa</a>
+        <a href="#" class="btn-club-mobile">Manmat Club</a>
+    </nav>
+
+    <section class="hero">
+        <div class="hero-inner">
+            <div class="year-big">2026</div>
+            <h1>Kalendář akcí</h1>
+            <p>Kompletní seznam akcí, výstav a závodů kde se s námi můžeš potkat!</p>
+            <div class="hero-accent"></div>
+        </div>
+    </section>
+
+    <div class="filter-bar" id="filterBar">
+        <button class="filter-btn active" data-filter="all">Vše</button>
+        <button class="filter-btn" data-filter="zavod">Závody</button>
+        <button class="filter-btn" data-filter="vystava">Výstavy</button>
+        <button class="filter-btn" data-filter="akce">Akce</button>
+        <button class="filter-btn" data-filter="veletrh">Veletrhy</button>
+    </div>
+    <section class="cal-section" id="calSection"></section>
+
+    <footer class="site-footer">
+        <div class="footer-bottom">
+            <p>&copy; 2025 <a href="index.html">MakejsManMatem.cz</a> &middot; Powered by ManMat</p>
+        </div>
+    </footer>
+
+    <script>
+    const allEvents = [
+        { m: 0, d: "10.-11.1.", n: "Národní výstava psů", l: "Brno - Výstaviště BVV", t: "vystava" },
+        { m: 0, d: "17.-18.1.", n: "Mushingové závody", l: "Broumov - Janovičky", t: "zavod" },
+        { m: 0, d: "20.-24.1.", n: "Šediváčkův long", l: "Deštné v Orlických horách", t: "zavod" },
+        { m: 0, d: "24.-25.1.", n: "Mezinárodní výstava psů", l: "Brno - Výstaviště BVV", t: "vystava" },
+        { m: 1, d: "13.-15.2.", n: "MS FISTC Oravský Háj", l: "Brezovica, Slovensko", t: "zavod" },
+        { m: 1, d: "27.2.-1.3.", n: "Winter Danube", l: "Bratislava, Slovensko", t: "zavod" },
+        { m: 2, d: "28.2.-2.3.", n: "Závody psích spřežení", l: "Dolní Dvůr, Krkonoše", t: "zavod" },
+        { m: 2, d: "14.3.", n: "Pop up akce", l: "Praha - Holešovická tržnice", t: "akce" },
+        { m: 2, d: "14.-15.3.", n: "Jarné káry Mošovce", l: "Mošovce, Slovensko", t: "zavod" },
+        { m: 2, d: "21.-22.3.", n: "Pucharu Świata Polarex Cup", l: "Polsko - Minikowo", t: "zavod" },
+        { m: 2, d: "28.3.", n: "ExtremeDogRace Canicross", l: "Pevnost Dobrošov", t: "zavod" },
+        { m: 3, d: "4.4.", n: "Mushlikonoce Mordové rokle", l: "Lipník u Benátek n. Jiz.", t: "zavod" },
+        { m: 3, d: "9.-12.4.", n: "FOR PETS veletrh", l: "Praha - PVA Expo Letňany", t: "veletrh" },
+        { m: 3, d: "25.4.", n: "Rudolfův pohár (spřežení)", l: "Kladruby nad Labem", t: "zavod" },
+        { m: 4, d: "22.-24.5.", n: "MAKEJ S MANMATEM 2026", l: "Kemp Brodský - Červený Kostelec", t: "akce", highlight: true },
+        { m: 4, d: "23.5.", n: "Psí den", l: "Praha 13 - Centrální park Lužiny", t: "akce" },
+        { m: 4, d: "30.5.", n: "Dogmaraton Fatranský Vlčko", l: "Terchová, Slovensko", t: "zavod" },
+        { m: 5, d: "3.-7.6.", n: "Světová psí show", l: "Bologna, Itálie", t: "vystava" },
+        { m: 5, d: "6.6.", n: "Mezinárodní drezury", l: "Brno - Panská Lícha", t: "zavod" },
+        { m: 5, d: "20.6.", n: "VI. Irish Cob Show", l: "Sadská - Jezdecký areál", t: "vystava" },
+        { m: 6, d: "18.7.", n: "Zkus canicross Kuks", l: "Hospital Kuks", t: "akce" },
+        { m: 7, d: "1.8.", n: "MČR Spřežení ZH Tlumačov", l: "Zemský hřebčinec Tlumačov", t: "zavod" },
+        { m: 7, d: "22.8.", n: "Spřežení a všestrannost", l: "Humpolec - závodiště Dusilov", t: "zavod" },
+        { m: 8, d: "5.9.", n: "Beskydský Dogmaraton 2026", l: "Třinec - Guty", t: "zavod" },
+        { m: 8, d: "12.9.", n: "Mezinárodní výstava psů", l: "Olomouc - Výstaviště Flora", t: "vystava" },
+        { m: 8, d: "17.-20.9.", n: "33. ročník výstavy koní", l: "Výstaviště Lysá nad Labem", t: "vystava" },
+        { m: 8, d: "19.9.", n: "Výstava severských psů", l: "Nová Živohošť", t: "vystava" },
+        { m: 9, d: "6.-8.10.", n: "Veterinary Expo", l: "Varšava - Ptak Expo", t: "veletrh" },
+        { m: 9, d: "17.-18.10.", n: "Broďák 2026", l: "Kemp Brodský - Červený Kostelec", t: "akce" },
+        { m: 10, d: "31.10.-1.11.", n: "Mistrovství SR OFF-SNOW", l: "Mošovce, Slovensko", t: "zavod" },
+        { m: 10, d: "14.11.", n: "Steeplechase Canicross", l: "Pardubice - Dostihové závodiště", t: "zavod" },
+        { m: 10, d: "21.-22.11.", n: "MID Běleč", l: "Běleč nad Orlicí", t: "vystava" },
+        { m: 10, d: "26.-29.11.", n: "MS ICF Polsko", l: "Owińska, Polsko", t: "zavod" },
+        { m: 11, d: "5.12.", n: "Beskydský Winter Dog Race", l: "Třinec - Guty", t: "zavod" }
+    ];
+
+    const monthNames = ['Leden','Únor','Březen','Duben','Květen','Červen','Červenec','Srpen','Září','Říjen','Listopad','Prosinec'];
+    const typeLabels = { zavod: 'Závod', vystava: 'Výstava', akce: 'Akce', veletrh: 'Veletrh' };
+    const now = new Date();
+    const currentMonth = now.getMonth();
+    var activeFilter = 'all';
+
+    function render() {
+        const section = document.getElementById('calSection');
+        let html = '';
+        const grouped = {};
+        const filtered = activeFilter === 'all' ? allEvents : allEvents.filter(function(ev) { return ev.t === activeFilter; });
+
+        filtered.forEach(function(ev) {
+            if (!grouped[ev.m]) grouped[ev.m] = [];
+            grouped[ev.m].push(ev);
+        });
+
+        if (filtered.length === 0) {
+            section.innerHTML = '<p style="text-align:center;color:#999;padding:60px 0;font-size:16px;">Žádné akce v této kategorii.</p>';
+            return;
+        }
+
+        for (var m = 0; m < 12; m++) {
+            if (!grouped[m]) continue;
+            var events = grouped[m];
+            var isPast = m < currentMonth;
+            var word = events.length === 1 ? 'akce' : (events.length >= 2 && events.length <= 4) ? 'akce' : 'akcí';
+
+            html += '<div class="month-block">';
+            html += '<div class="month-header">';
+            html += '<span class="month-name">' + monthNames[m] + '</span>';
+            html += '<span class="month-line"></span>';
+            html += '<span class="month-count">' + events.length + ' ' + word + '</span>';
+            html += '</div>';
+
+            events.forEach(function(ev) {
+                var cardClass = ev.highlight ? 'event-card highlight' : (isPast ? 'event-card past-event' : 'event-card');
+                html += '<div class="' + cardClass + '">';
+                html += '<div class="event-date">' + ev.d + '</div>';
+                html += '<div class="event-info">';
+                html += '<div class="event-name">' + ev.n + '</div>';
+                html += '<div class="event-location"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>' + ev.l + '</div>';
+                html += '</div>';
+                html += '<span class="event-type type-' + ev.t + '">' + typeLabels[ev.t] + '</span>';
+                html += '</div>';
+            });
+
+            html += '</div>';
+        }
+
+        section.innerHTML = html;
+    }
+
+    render();
+
+    // Filter buttons
+    document.querySelectorAll('.filter-btn').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            document.querySelectorAll('.filter-btn').forEach(function(b) { b.classList.remove('active'); });
+            btn.classList.add('active');
+            activeFilter = btn.getAttribute('data-filter');
+            render();
+        });
+    });
+
+    // Mobile menu
+    const burgerMenu = document.getElementById('burgerMenu');
+    const mobileNav = document.getElementById('mobileNav');
+    const mobileNavOverlay = document.getElementById('mobileNavOverlay');
+    function toggleMobileMenu() {
+        const isOpen = mobileNav.classList.contains('open');
+        if (isOpen) { mobileNav.classList.remove('open'); burgerMenu.classList.remove('open'); mobileNavOverlay.classList.remove('visible'); document.body.style.overflow = ''; setTimeout(() => { mobileNavOverlay.style.display = 'none'; }, 300);
+        } else { mobileNavOverlay.style.display = 'block'; mobileNavOverlay.offsetHeight; mobileNav.classList.add('open'); burgerMenu.classList.add('open'); mobileNavOverlay.classList.add('visible'); document.body.style.overflow = 'hidden'; }
+    }
+    burgerMenu.addEventListener('click', toggleMobileMenu);
+    mobileNavOverlay.addEventListener('click', toggleMobileMenu);
+    </script>
+    <script src="cookie-consent.js"></script>
+</body>
+</html>

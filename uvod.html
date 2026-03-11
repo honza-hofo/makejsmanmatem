@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Makej s ManMatem | Komunita psích sportů</title>
+    <meta name="description" content="Makej s ManMatem - komunita pro všechny, kteří žijí psími sporty. Mushing, canicross, bikejoring a další. Mapa veterinářů, články, kalendář akcí.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; overflow-x: hidden; }
+        body { font-family: 'Poppins', sans-serif; background: #f4f5f7; color: #333; line-height: 1.6; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+
+        /* HEADER */
+        .site-header { background: #fff; position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.06); }
+        .header-inner { max-width: 1200px; margin: 0 auto; padding: 0 30px; display: flex; align-items: center; justify-content: space-between; height: 80px; position: relative; }
+        .logo-link { display: flex; align-items: center; text-decoration: none; flex-shrink: 0; }
+        .logo-link img { height: 50px; width: auto; }
+        .nav-center { display: flex; align-items: center; gap: 36px; list-style: none; position: absolute; left: 50%; transform: translateX(-50%); }
+        .nav-center a { text-decoration: none; color: #333; font-family: 'Montserrat', sans-serif; font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; position: relative; padding: 4px 0; transition: color 0.3s ease; }
+        .nav-center a::after { content: ''; position: absolute; bottom: -2px; left: 0; width: 0; height: 2px; background: #E30A14; transition: width 0.3s ease; }
+        .nav-center a:hover::after, .nav-center a.active::after { width: 100%; }
+        .nav-center a:hover, .nav-center a.active { color: #E30A14; }
+        .header-right { display: flex; align-items: center; flex-shrink: 0; }
+        .btn-club { display: inline-flex; align-items: center; gap: 8px; background: #E30A14; color: #fff; text-decoration: none; font-family: 'Montserrat', sans-serif; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; padding: 12px 24px; border-radius: 50px; transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease; }
+        .btn-club:hover { background: #c50812; transform: translateY(-1px); box-shadow: 0 4px 15px rgba(227,10,20,0.35); }
+        .burger-menu { display: none; background: none; border: none; cursor: pointer; padding: 8px; flex-direction: column; gap: 5px; z-index: 1010; }
+        .burger-menu span { display: block; width: 24px; height: 2px; background: #333; border-radius: 2px; transition: all 0.3s ease; }
+        .burger-menu.open span:nth-child(1) { transform: rotate(45deg) translate(5px,5px); }
+        .burger-menu.open span:nth-child(2) { opacity: 0; }
+        .burger-menu.open span:nth-child(3) { transform: rotate(-45deg) translate(5px,-5px); }
+        .mobile-nav-overlay { display: none; position: fixed; top:0;left:0;right:0;bottom:0; background: rgba(0,0,0,0.5); z-index: 999; opacity: 0; transition: opacity 0.3s ease; }
+        .mobile-nav-overlay.visible { opacity: 1; }
+        .mobile-nav { display: none; position: fixed; top:0; right:-300px; width:300px; height:100%; background:#fff; z-index:1005; padding:100px 30px 30px; transition: right 0.3s ease; box-shadow: -5px 0 30px rgba(0,0,0,0.1); overflow-y: auto; }
+        .mobile-nav.open { right: 0; }
+        .mobile-nav a { display:block; text-decoration:none; color:#333; font-family:'Montserrat',sans-serif; font-size:15px; font-weight:600; text-transform:uppercase; letter-spacing:1px; padding:16px 0; border-bottom:1px solid #eee; }
+        .mobile-nav a:hover, .mobile-nav a.active { color: #E30A14; }
+        .mobile-nav .btn-club-mobile { display:inline-block; margin-top:24px; background:#E30A14; color:#fff; text-decoration:none; font-family:'Montserrat',sans-serif; font-size:13px; font-weight:700; text-transform:uppercase; letter-spacing:1px; padding:14px 28px; border-radius:50px; text-align:center; }
+
+        /* HERO */
+        .hero-section {
+            width: 100%;
+            height: 70vh;
+            background: url('img/hero-bg.jpg') right 30%/cover no-repeat;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+        }
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.45);
+        }
+        .hero-inner {
+            position: relative;
+            z-index: 1;
+            max-width: 600px;
+            text-align: left;
+            padding: 0 30px 0 60px;
+        }
+        .hero-section h1 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 56px;
+            font-weight: 900;
+            color: #fff;
+            margin-bottom: 20px;
+            line-height: 1.1;
+            text-shadow: 0 2px 20px rgba(0,0,0,0.3);
+        }
+        .hero-section h1 span { color: #E30A14; }
+        .hero-section p {
+            font-size: 20px;
+            color: rgba(255,255,255,0.9);
+            font-weight: 300;
+            line-height: 1.7;
+            max-width: 600px;
+            margin: 0 0 40px;
+            text-shadow: 0 1px 10px rgba(0,0,0,0.3);
+        }
+        /* COMMUNITY */
+        .community-section {
+            background: #fff;
+            padding: 60px 30px;
+            text-align: center;
+        }
+        .community-inner { max-width: 700px; margin: 0 auto; }
+        .community-section h2 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 36px;
+            font-weight: 800;
+            color: #222;
+            margin-bottom: 20px;
+        }
+        .community-section h2 span { color: #E30A14; }
+        .community-section p {
+            font-size: 18px;
+            color: #666;
+            font-weight: 300;
+            line-height: 1.8;
+            margin-bottom: 30px;
+        }
+        .community-section p strong { color: #222; font-weight: 600; }
+        .hero-buttons { display: flex; gap: 16px; justify-content: flex-start; flex-wrap: wrap; }
+        .hero-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 14px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 16px 36px;
+            border-radius: 50px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        .hero-btn-primary {
+            background: #E30A14;
+            color: #fff;
+        }
+        .hero-btn-primary:hover { background: #c50812; transform: translateY(-2px); box-shadow: 0 6px 20px rgba(227,10,20,0.4); }
+        .hero-btn-secondary {
+            background: rgba(255,255,255,0.15);
+            color: #fff;
+            border: 2px solid rgba(255,255,255,0.3);
+        }
+        .hero-btn-secondary:hover { background: rgba(255,255,255,0.25); transform: translateY(-2px); }
+
+        /* SECTIONS GRID */
+        .sections-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 80px 30px;
+        }
+        .sections-title {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        .sections-title h2 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 36px;
+            font-weight: 800;
+            color: #222;
+            margin-bottom: 12px;
+        }
+        .sections-title p {
+            font-size: 17px;
+            color: #999;
+            font-weight: 300;
+        }
+        .sections-title .accent {
+            width: 60px;
+            height: 3px;
+            background: #E30A14;
+            margin: 20px auto 0;
+            border-radius: 2px;
+        }
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 28px;
+        }
+        .section-card {
+            background: #fff;
+            border-radius: 16px;
+            padding: 40px 30px;
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+        .section-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 16px 48px rgba(0,0,0,0.08);
+        }
+        .card-icon {
+            width: 72px;
+            height: 72px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 32px;
+        }
+        .card-icon-red { background: rgba(227,10,20,0.1); }
+        .card-icon-blue { background: rgba(59,130,246,0.1); }
+        .card-icon-green { background: rgba(34,197,94,0.1); }
+        .card-icon-orange { background: rgba(249,115,22,0.1); }
+        .card-icon-purple { background: rgba(139,92,246,0.1); }
+        .section-card h3 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 20px;
+            font-weight: 700;
+            color: #222;
+            margin-bottom: 10px;
+        }
+        .section-card p {
+            font-size: 14px;
+            color: #999;
+            line-height: 1.6;
+        }
+        .card-arrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 16px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 13px;
+            font-weight: 600;
+            color: #E30A14;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* SPORTS STRIP */
+        .sports-strip {
+            background: linear-gradient(135deg, #1a1a1a, #2d2d2d);
+            padding: 60px 30px;
+            text-align: center;
+        }
+        .sports-strip h2 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 28px;
+            font-weight: 800;
+            color: #fff;
+            margin-bottom: 30px;
+        }
+        .sports-list {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            flex-wrap: wrap;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        .sport-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+        .sport-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: rgba(227,10,20,0.15);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+        }
+        .sport-name {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 12px;
+            font-weight: 600;
+            color: rgba(255,255,255,0.7);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* CTA */
+        .cta-section {
+            background: #fff;
+            padding: 80px 30px;
+            text-align: center;
+        }
+        .cta-inner { max-width: 600px; margin: 0 auto; }
+        .cta-inner h2 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 32px;
+            font-weight: 800;
+            color: #222;
+            margin-bottom: 16px;
+        }
+        .cta-inner p {
+            font-size: 17px;
+            color: #999;
+            font-weight: 300;
+            margin-bottom: 30px;
+        }
+
+        /* FOOTER */
+        .site-footer { background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%); color: rgba(255,255,255,0.7); padding: 60px 30px 40px; }
+        .footer-inner { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 40px; }
+        .footer-col { display: flex; flex-direction: column; }
+        .footer-col h4 { font-family: 'Montserrat', sans-serif; font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: #fff; margin-bottom: 20px; }
+        .footer-logo { margin-bottom: 16px; }
+        .footer-logo img { height: 40px; width: auto; filter: brightness(0) invert(1); }
+        .footer-col p { font-size: 14px; line-height: 1.8; color: rgba(255,255,255,0.5); }
+        .footer-contact-item { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; font-size: 14px; color: rgba(255,255,255,0.7); }
+        .footer-contact-item svg { width: 18px; height: 18px; color: #E30A14; flex-shrink: 0; }
+        .footer-contact-item a { color: rgba(255,255,255,0.7); text-decoration: none; }
+        .footer-contact-item a:hover { color: #fff; }
+        .social-links { display: flex; gap: 12px; }
+        .social-link { width: 40px; height: 40px; border-radius: 50%; background: rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; transition: background 0.3s ease; }
+        .social-link:hover { background: #E30A14; }
+        .social-link svg { width: 18px; height: 18px; fill: #fff; }
+        .footer-bottom { border-top: 1px solid rgba(255,255,255,0.1); margin-top: 40px; padding-top: 24px; text-align: center; font-size: 13px; color: rgba(255,255,255,0.3); }
+        .footer-bottom a { color: rgba(255,255,255,0.5); text-decoration: none; }
+
+        /* RESPONSIVE */
+        @media (max-width: 900px) {
+            .nav-center { display: none; }
+            .burger-menu { display: flex; }
+            .mobile-nav { display: block; }
+            .mobile-nav-overlay { display: block; }
+            .hero-section h1 { font-size: 36px; }
+            .hero-section { height: 50vh; }
+            .cards-grid { grid-template-columns: 1fr; gap: 16px; }
+            .footer-inner { grid-template-columns: 1fr; gap: 30px; }
+            .sports-list { gap: 24px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="site-header">
+        <div class="header-inner">
+            <a href="uvod.html" class="logo-link">
+                <img src="img/manmat-logo.png" alt="ManMat">
+            </a>
+            <ul class="nav-center">
+                <li><a href="kontakt.html">Kontakt</a></li>
+                <li><a href="ambasadori.html">Ambasadoři</a></li>
+                <li><a href="clanky.html">Články</a></li>
+                <li><a href="kalendar.html">Kalendář</a></li>
+                <li><a href="mapa.html">Mapa</a></li>
+            </ul>
+            <div class="header-right">
+                <a href="#" class="btn-club">Manmat Club</a>
+                <button class="burger-menu" id="burgerMenu" aria-label="Menu">
+                    <span></span><span></span><span></span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <div class="mobile-nav-overlay" id="mobileNavOverlay"></div>
+    <nav class="mobile-nav" id="mobileNav">
+        <a href="uvod.html" class="active">Úvod</a>
+        <a href="kontakt.html">Kontakt</a>
+        <a href="ambasadori.html">Ambasadoři</a>
+        <a href="clanky.html">Články</a>
+        <a href="kalendar.html">Kalendář</a>
+        <a href="mapa.html">Mapa</a>
+        <a href="#" class="btn-club-mobile">Manmat Club</a>
+    </nav>
+
+    <!-- HERO -->
+    <section class="hero-section">
+        <div class="hero-inner">
+            <h1>NEJDE JEN O SPORT<br><span>JDE O TÝM</span></h1>
+            <p>Psí sporty nejsou jen o výkonu. Jsou o důvěře, pohybu a společné cestě. Pes není jen zvíře – je to parťák.</p>
+            <div class="hero-buttons">
+                <a href="kalendar.html" class="hero-btn hero-btn-primary">Začni Makat</a>
+                <a href="mapa.html" class="hero-btn hero-btn-secondary">
+                    <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                    Mapa veterinářů
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- KOMUNITA -->
+    <section class="community-section">
+        <div class="community-inner">
+            <h2>Makej s <span>ManMatem</span></h2>
+            <p>Psí sporty nejsou jen hobby. <strong>Jsou životním stylem.</strong> Ať už jezdíš na saních, běháš canicross nebo zkoušíš bikejoring – jsi součástí komunity, která žije pohybem se svými psy.</p>
+            <p>Pes není jen zvíře. <strong>Je to parťák.</strong></p>
+            <a href="https://www.facebook.com/makejsmanmatem" target="_blank" class="hero-btn hero-btn-primary">Přidej se ke komunitě</a>
+        </div>
+    </section>
+
+    <!-- SECTIONS -->
+    <section class="sections-grid">
+        <div class="sections-title">
+            <h2>Vše na jednom místě</h2>
+            <p>Vše co potřebuješ pro svět psích sportů</p>
+            <div class="accent"></div>
+        </div>
+        <div class="cards-grid">
+
+            <a href="mapa.html" class="section-card">
+                <div class="card-icon card-icon-red">&#128506;</div>
+                <h3>Mapa veterinářů</h3>
+                <p>Interaktivní mapa veterinárních klinik, fyzioterapeutů a sanitek po celé Evropě.</p>
+                <div class="card-arrow">Prozkoumat &rarr;</div>
+            </a>
+
+            <a href="clanky.html" class="section-card">
+                <div class="card-icon card-icon-blue">&#128240;</div>
+                <h3>Články</h3>
+                <p>Novinky, tipy a příběhy ze světa mushingu, canicrossu a dalších psích sportů.</p>
+                <div class="card-arrow">Číst články &rarr;</div>
+            </a>
+
+            <a href="kalendar.html" class="section-card">
+                <div class="card-icon card-icon-orange">&#128197;</div>
+                <h3>Kalendář akcí</h3>
+                <p>Přehled všech závodů a sportovních akcí pro rok 2026 na jednom místě.</p>
+                <div class="card-arrow">Zobrazit akce &rarr;</div>
+            </a>
+
+            <a href="ambasadori.html" class="section-card">
+                <div class="card-icon card-icon-green">&#127941;</div>
+                <h3>Ambasadoři</h3>
+                <p>Poznej naše ambasadory — sportovce a nadšence, kteří reprezentují ManMat.</p>
+                <div class="card-arrow">Poznat ambasadory &rarr;</div>
+            </a>
+
+            <a href="kontakt.html" class="section-card">
+                <div class="card-icon card-icon-purple">&#128172;</div>
+                <h3>Kontakt</h3>
+                <p>Máš otázku nebo nápad? Ozvi se nám, rádi si popovídáme.</p>
+                <div class="card-arrow">Napsat nám &rarr;</div>
+            </a>
+
+            <a href="https://www.manmat.cz" target="_blank" class="section-card">
+                <div class="card-icon card-icon-red">&#128722;</div>
+                <h3>ManMat Shop</h3>
+                <p>Profesionální vybavení pro psí sporty. Postroje, vodítka, oblečení a další.</p>
+                <div class="card-arrow">Do obchodu &rarr;</div>
+            </a>
+
+        </div>
+    </section>
+
+    <!-- SPORTS -->
+    <section class="sports-strip">
+        <h2>Naše sporty</h2>
+        <div class="sports-list">
+            <div class="sport-item">
+                <div class="sport-icon">&#128054;</div>
+                <div class="sport-name">Mushing</div>
+            </div>
+            <div class="sport-item">
+                <div class="sport-icon">&#127939;</div>
+                <div class="sport-name">Canicross</div>
+            </div>
+            <div class="sport-item">
+                <div class="sport-icon">&#128692;</div>
+                <div class="sport-name">Bikejoring</div>
+            </div>
+            <div class="sport-item">
+                <div class="sport-icon">&#9975;&#65039;</div>
+                <div class="sport-name">Skijöring</div>
+            </div>
+            <div class="sport-item">
+                <div class="sport-icon">&#128726;</div>
+                <div class="sport-name">Dogtrekking</div>
+            </div>
+            <div class="sport-item">
+                <div class="sport-icon">&#127947;</div>
+                <div class="sport-name">Dogscooter</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta-section">
+        <div class="cta-inner">
+            <h2>Připoj se ke komunitě</h2>
+            <p>Sleduj nás na sociálních sítích a buď součástí ManMat komunity.</p>
+            <a href="#" class="btn-club" style="font-size: 14px; padding: 16px 36px;">Manmat Club</a>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="site-footer">
+        <div class="footer-inner">
+            <div class="footer-col">
+                <div class="footer-logo">
+                    <img src="img/manmat-logo.png" alt="ManMat">
+                </div>
+                <p>Jsme komunita, která žije psími sporty</p>
+            </div>
+            <div class="footer-col">
+                <h4>Kontakt</h4>
+                <div class="footer-contact-item">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                    <a href="mailto:formanek@manmat.cz">formanek@manmat.cz</a>
+                </div>
+                <div class="footer-contact-item">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
+                    <a href="tel:+420737060454">+420 737 060 454</a>
+                </div>
+            </div>
+            <div class="footer-col">
+                <h4>Sledujte nás</h4>
+                <div class="social-links">
+                    <a href="https://www.facebook.com/makejsmanmatem" class="social-link" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></a>
+                    <a href="https://www.instagram.com/makejsmanmatem" class="social-link" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg></a>
+                    <a href="https://www.youtube.com/@makejsmanmatem" class="social-link" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 <a href="uvod.html">MakejsManMatem.cz</a> &middot; Powered by ManMat</p>
+        </div>
+    </footer>
+
+    <script>
+    const burgerMenu = document.getElementById('burgerMenu');
+    const mobileNav = document.getElementById('mobileNav');
+    const mobileNavOverlay = document.getElementById('mobileNavOverlay');
+    function toggleMobileMenu() {
+        const isOpen = mobileNav.classList.contains('open');
+        if (isOpen) {
+            mobileNav.classList.remove('open');
+            burgerMenu.classList.remove('open');
+            mobileNavOverlay.classList.remove('visible');
+            document.body.style.overflow = '';
+            setTimeout(() => { mobileNavOverlay.style.display = 'none'; }, 300);
+        } else {
+            mobileNavOverlay.style.display = 'block';
+            mobileNavOverlay.offsetHeight;
+            mobileNav.classList.add('open');
+            burgerMenu.classList.add('open');
+            mobileNavOverlay.classList.add('visible');
+            document.body.style.overflow = 'hidden';
+        }
+    }
+    burgerMenu.addEventListener('click', toggleMobileMenu);
+    mobileNavOverlay.addEventListener('click', toggleMobileMenu);
+    </script>
+    <script src="cookie-consent.js"></script>
+</body>
+</html>
